@@ -324,6 +324,19 @@ class SignalIntegrityApp(tk.Frame):
                 self.Drawing.stateMachine.NoProject(True)
 
         self.UpdateRecentProjectsMenu()
+
+        if '.s2p' in projectFileName:
+            import SignalIntegrity.Lib as si
+            fileparts=FileParts(projectFileName)
+            if fileparts.fileext is None or fileparts.fileext == '':
+                return
+            elif fileparts.fileext == '.cal':
+                self.calibration=self.OpenCalibrationFile(fileparts.FullFilePathExtension())
+                self.ViewCalibration(self.calibration)
+            else:
+                sp=si.sp.SParameterFile(fileparts.FullFilePathExtension())
+                SParametersDialog(self,sp,fileparts.FullFilePathExtension())
+
         self.root.deiconify()
         if runMainLoop:
             self.root.mainloop()
